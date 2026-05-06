@@ -1,0 +1,215 @@
+/* login/index.css */
+
+/* Background */
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    135deg,
+    #fefcf7 0%,
+    #e6f0ff 100%
+  ); /* cream → light blue */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Card */
+.login-card {
+  background: #ffffff; /* pure white card */
+  padding: 40px 35px;
+  border-radius: 22px;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 15px 40px rgba(37, 99, 235, 0.25); /* subtle blue shadow */
+  animation: fadeIn 0.6s ease-in-out;
+  border: 1px solid rgba(37, 99, 235, 0.2); /* soft blue border */
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.login-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(37, 99, 235, 0.35);
+}
+
+/* Logo */
+.login-logo {
+  width: 110px;
+  height: auto;
+  margin: 0 auto 18px;
+  display: block;
+  user-select: none;
+}
+
+/* Title */
+.login-title {
+  text-align: center;
+  margin-top: 5px;
+  color: #1e3a8a; /* deep blue */
+  font-size: 28px;
+  font-weight: 700;
+  font-family: 'Georgia', serif;
+}
+
+/* Subtitle */
+.login-subtitle {
+  text-align: center;
+  font-size: 15px;
+  color: #2563eb; /* bright blue accent */
+  margin-bottom: 30px;
+  font-family: 'Georgia', serif;
+}
+
+/* Labels */
+.login-card label {
+  margin-top: 15px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e40af; /* dark blue */
+  user-select: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Input */
+.login-card input {
+  padding: 12px 14px;
+  margin-top: 8px;
+  border-radius: 14px;
+  border: 1.5px solid #93c5fd; /* light blue border */
+  background-color: #f0f7ff; /* very light blue background */
+  outline: none;
+  transition: all 0.25s ease;
+  font-size: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  color: #1e3a8a;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-card input::placeholder {
+  color: #93c5fd;
+}
+
+.login-card input:focus {
+  border-color: #2563eb;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+}
+
+/* Password Wrapper */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input {
+  padding-right: 45px; /* space for toggle button */
+}
+
+/* Toggle Password Button (React Icons) */
+.toggle-password-btn {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  color: #2563eb;
+  user-select: none;
+  transition: color 0.3s ease;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.toggle-password-btn:hover {
+  color: #1e40af;
+}
+
+/* Button */
+.login-btn {
+  margin-top: 30px;
+  padding: 14px;
+  border: none;
+  background: linear-gradient(90deg, #2563eb, #1e3a8a);
+  color: white;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 26px rgba(37, 99, 235, 0.6);
+}
+
+/* Error */
+.error {
+  color: #d63447;
+  margin-top: 12px;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 600;
+  user-select: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .login-card {
+    max-width: 100%;
+    padding: 30px 25px;
+    border-radius: 18px;
+  }
+
+  .login-title {
+    font-size: 24px;
+  }
+
+  .login-subtitle {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .login-btn {
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 350px) {
+  .login-card {
+    padding: 25px 20px;
+  }
+
+  .login-btn {
+    padding: 11px;
+    font-size: 14px;
+  }
+}
