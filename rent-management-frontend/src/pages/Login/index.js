@@ -4,7 +4,7 @@ import { FiEye, FiEyeOff } from 'react-icons/fi';
 import logo from '../../SettyRents.png';
 import './index.css';
 
-const API_BASE = "https://demo-production-bf0f.up.railway.app";
+const API_BASE = import.meta.env.VITE_API_URL;
 
 const Login = () => {
   const navigate = useNavigate();
