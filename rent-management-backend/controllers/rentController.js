@@ -7,16 +7,26 @@ import { Op } from "sequelize";
 /* ================= NORMALIZER ================= */
 const normalize = (body) => ({
   tenant_id: Number(body.tenant_id),
-  month: body.month?.trim().toLowerCase(),
+
+  month: body.month?.trim(),
 
   rent: Number(body.rent || 0),
+
   water: Number(body.water || 0),
+
   maintenance: Number(body.maintenance || 0),
+
   electricity: Number(body.electricity || 0),
 
   previous_due: Number(body.previous_due || 0),
+
+  total: Number(body.total || 0),
+
   paid: Number(body.paid || 0),
+
   advance: Number(body.advance || 0),
+
+  due: Number(body.due || 0),
 
   status: body.status || "not vacated",
 });
