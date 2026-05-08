@@ -29,7 +29,6 @@ export const getRooms = async (req, res) => {
       ],
       order: [["id", "DESC"]],
     });
-    console.log(JSON.stringify(rooms, null, 2));
 
     return res.json({
       success: true,
@@ -51,6 +50,10 @@ export const addRoom = async (req, res) => {
 
   room_number = room_number?.trim();
 
+  // Convert to Number
+  building_id = Number(building_id);
+  floor_id = Number(floor_id);
+
   const validationError = validateRoom({
     building_id,
     floor_id,
@@ -67,6 +70,7 @@ export const addRoom = async (req, res) => {
   try {
     // Check building
     const building = await Building.findByPk(building_id);
+
     if (!building) {
       return res.status(404).json({
         success: false,
@@ -76,6 +80,7 @@ export const addRoom = async (req, res) => {
 
     // Check floor
     const floor = await Floor.findByPk(floor_id);
+
     if (!floor) {
       return res.status(404).json({
         success: false,
@@ -83,8 +88,11 @@ export const addRoom = async (req, res) => {
       });
     }
 
-    // Ensure floor belongs to building
-    if (floor.building_id !== Number(building_id)) {
+    console.log("building_id:", building_id);
+    console.log("floor.building_id:", floor.building_id);
+
+    // FIXED HERE
+    if (Number(floor.building_id) !== Number(building_id)) {
       return res.status(400).json({
         success: false,
         message: "Selected floor does not belong to this building",
@@ -125,7 +133,7 @@ export const addRoom = async (req, res) => {
       });
     }
 
-    console.error("❌ ADD ROOM ERROR:", err.message);
+    console.error("❌ ADD ROOM ERROR:", err);
 
     return res.status(500).json({
       success: false,
@@ -137,9 +145,14 @@ export const addRoom = async (req, res) => {
 /* ================= UPDATE ROOM ================= */
 export const updateRoom = async (req, res) => {
   const { id } = req.params;
+
   let { building_id, floor_id, room_number } = req.body;
 
   room_number = room_number?.trim();
+
+  // Convert to Number
+  building_id = Number(building_id);
+  floor_id = Number(floor_id);
 
   try {
     const room = await Room.findByPk(id);
@@ -161,7 +174,8 @@ export const updateRoom = async (req, res) => {
       });
     }
 
-    if (floor.building_id !== Number(building_id)) {
+    // FIXED HERE
+    if (Number(floor.building_id) !== Number(building_id)) {
       return res.status(400).json({
         success: false,
         message: "Selected floor does not belong to this building",
@@ -202,7 +216,7 @@ export const updateRoom = async (req, res) => {
       });
     }
 
-    console.error("❌ UPDATE ROOM ERROR:", err.message);
+    console.error("❌ UPDATE ROOM ERROR:", err);
 
     return res.status(500).json({
       success: false,
