@@ -1,11 +1,9 @@
-import Room from '../models/Room.js';
-import Building from '../models/Building.js';
-import Floor from '../models/Floor.js';
+import { Room, Building, Floor } from "../models/index.js";
 
 /* ================= VALIDATION ================= */
 const validateRoom = ({ building_id, floor_id, room_number }) => {
   if (!building_id || !floor_id || !room_number?.trim()) {
-    return 'Building, floor and room number are required';
+    return "Building, floor and room number are required";
   }
 
   return null;
@@ -18,31 +16,31 @@ export const getRooms = async (req, res) => {
       include: [
         {
           model: Building,
-          as: 'building',
-          attributes: ['id', 'name'],
+          as: "building",
+          attributes: ["id", "name"],
           required: false,
         },
         {
           model: Floor,
-          as: 'floor',
-          attributes: ['id', 'floor_number'],
+          as: "floor",
+          attributes: ["id", "floor_number"],
           required: false,
         },
       ],
-      order: [['id', 'DESC']],
+      order: [["id", "DESC"]],
     });
+    console.log(JSON.stringify(rooms, null, 2));
 
     return res.json({
       success: true,
       data: rooms || [],
     });
-
   } catch (err) {
-    console.error("❌ GET ROOMS ERROR:", err.message);
+    console.error("❌ GET ROOMS ERROR FULL:", err);
 
     return res.status(500).json({
       success: false,
-      message: 'Failed to fetch rooms',
+      message: "Failed to fetch rooms",
     });
   }
 };
@@ -72,7 +70,7 @@ export const addRoom = async (req, res) => {
     if (!building) {
       return res.status(404).json({
         success: false,
-        message: 'Building not found',
+        message: "Building not found",
       });
     }
 
@@ -81,7 +79,7 @@ export const addRoom = async (req, res) => {
     if (!floor) {
       return res.status(404).json({
         success: false,
-        message: 'Floor not found',
+        message: "Floor not found",
       });
     }
 
@@ -89,7 +87,7 @@ export const addRoom = async (req, res) => {
     if (floor.building_id !== Number(building_id)) {
       return res.status(400).json({
         success: false,
-        message: 'Selected floor does not belong to this building',
+        message: "Selected floor does not belong to this building",
       });
     }
 
@@ -103,29 +101,27 @@ export const addRoom = async (req, res) => {
       include: [
         {
           model: Building,
-          as: 'building',
-          attributes: ['name'],
+          as: "building",
+          attributes: ["name"],
         },
         {
           model: Floor,
-          as: 'floor',
-          attributes: ['floor_number'],
+          as: "floor",
+          attributes: ["floor_number"],
         },
       ],
     });
 
     return res.status(201).json({
       success: true,
-      message: 'Room added successfully',
+      message: "Room added successfully",
       data: newRoom,
     });
-
   } catch (err) {
-
-    if (err.name === 'SequelizeUniqueConstraintError') {
+    if (err.name === "SequelizeUniqueConstraintError") {
       return res.status(400).json({
         success: false,
-        message: 'Room already exists on this floor',
+        message: "Room already exists on this floor",
       });
     }
 
@@ -133,7 +129,7 @@ export const addRoom = async (req, res) => {
 
     return res.status(500).json({
       success: false,
-      message: 'Failed to add room',
+      message: "Failed to add room",
     });
   }
 };
@@ -151,7 +147,7 @@ export const updateRoom = async (req, res) => {
     if (!room) {
       return res.status(404).json({
         success: false,
-        message: 'Room not found',
+        message: "Room not found",
       });
     }
 
@@ -161,14 +157,14 @@ export const updateRoom = async (req, res) => {
     if (!building || !floor) {
       return res.status(404).json({
         success: false,
-        message: 'Building or floor not found',
+        message: "Building or floor not found",
       });
     }
 
     if (floor.building_id !== Number(building_id)) {
       return res.status(400).json({
         success: false,
-        message: 'Selected floor does not belong to this building',
+        message: "Selected floor does not belong to this building",
       });
     }
 
@@ -182,29 +178,27 @@ export const updateRoom = async (req, res) => {
       include: [
         {
           model: Building,
-          as: 'building',
-          attributes: ['name'],
+          as: "building",
+          attributes: ["name"],
         },
         {
           model: Floor,
-          as: 'floor',
-          attributes: ['floor_number'],
+          as: "floor",
+          attributes: ["floor_number"],
         },
       ],
     });
 
     return res.json({
       success: true,
-      message: 'Room updated successfully',
+      message: "Room updated successfully",
       data: updatedRoom,
     });
-
   } catch (err) {
-
-    if (err.name === 'SequelizeUniqueConstraintError') {
+    if (err.name === "SequelizeUniqueConstraintError") {
       return res.status(400).json({
         success: false,
-        message: 'Room already exists on this floor',
+        message: "Room already exists on this floor",
       });
     }
 
@@ -212,7 +206,7 @@ export const updateRoom = async (req, res) => {
 
     return res.status(500).json({
       success: false,
-      message: 'Failed to update room',
+      message: "Failed to update room",
     });
   }
 };
@@ -227,7 +221,7 @@ export const deleteRoom = async (req, res) => {
     if (!room) {
       return res.status(404).json({
         success: false,
-        message: 'Room not found',
+        message: "Room not found",
       });
     }
 
@@ -235,15 +229,14 @@ export const deleteRoom = async (req, res) => {
 
     return res.json({
       success: true,
-      message: 'Room deleted successfully',
+      message: "Room deleted successfully",
     });
-
   } catch (err) {
     console.error("❌ DELETE ROOM ERROR:", err.message);
 
     return res.status(500).json({
       success: false,
-      message: 'Failed to delete room',
+      message: "Failed to delete room",
     });
   }
 };
