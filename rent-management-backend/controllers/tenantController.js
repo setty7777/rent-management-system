@@ -27,7 +27,7 @@ const uploadToCloudinary = (fileBuffer) => {
       (error, result) => {
         if (error) reject(error);
         else resolve(result);
-      }
+      },
     );
     streamifier.createReadStream(fileBuffer).pipe(stream);
   });
@@ -50,7 +50,6 @@ export const getTenants = async (req, res) => {
       count: tenants.length,
       data: tenants,
     });
-
   } catch (error) {
     console.error("❌ GET TENANTS ERROR:", error.message);
 
@@ -91,14 +90,14 @@ export const addTenant = async (req, res) => {
       });
     }
 
-    if (floor.building_id !== data.building_id) {
+    if (Number(floor.building_id) !== Number(data.building_id)) {
       return res.status(400).json({
         success: false,
         message: "Floor does not belong to building",
       });
     }
 
-    if (room.floor_id !== data.floor_id) {
+    if (Number(room.floor_id) !== Number(data.floor_id)) {
       return res.status(400).json({
         success: false,
         message: "Room does not belong to floor",
@@ -130,7 +129,7 @@ export const addTenant = async (req, res) => {
             url: result.secure_url,
             public_id: result.public_id,
           };
-        })
+        }),
       );
     }
 
@@ -144,7 +143,6 @@ export const addTenant = async (req, res) => {
       message: "Tenant added successfully",
       data: tenant,
     });
-
   } catch (error) {
     console.error("❌ ADD TENANT ERROR:", error.message);
 
@@ -175,26 +173,22 @@ export const updateTenant = async (req, res) => {
       building_id: req.body.building_id
         ? Number(req.body.building_id)
         : tenant.building_id,
-      floor_id: req.body.floor_id
-        ? Number(req.body.floor_id)
-        : tenant.floor_id,
-      room_id: req.body.room_id
-        ? Number(req.body.room_id)
-        : tenant.room_id,
+      floor_id: req.body.floor_id ? Number(req.body.floor_id) : tenant.floor_id,
+      room_id: req.body.room_id ? Number(req.body.room_id) : tenant.room_id,
     };
 
     // Validate relationships again
     const floor = await Floor.findByPk(data.floor_id);
     const room = await Room.findByPk(data.room_id);
 
-    if (floor.building_id !== data.building_id) {
+    if (Number(floor.building_id) !== Number(data.building_id)) {
       return res.status(400).json({
         success: false,
         message: "Floor mismatch",
       });
     }
 
-    if (room.floor_id !== data.floor_id) {
+    if (Number(room.floor_id) !== Number(data.floor_id)) {
       return res.status(400).json({
         success: false,
         message: "Room mismatch",
@@ -211,7 +205,7 @@ export const updateTenant = async (req, res) => {
             url: result.secure_url,
             public_id: result.public_id,
           };
-        })
+        }),
       );
 
       documents = [...documents, ...newDocs];
@@ -224,7 +218,6 @@ export const updateTenant = async (req, res) => {
       message: "Tenant updated successfully",
       data: tenant,
     });
-
   } catch (error) {
     console.error("❌ UPDATE TENANT ERROR:", error.message);
 
@@ -261,7 +254,6 @@ export const deleteTenant = async (req, res) => {
       success: true,
       message: "Tenant deleted successfully",
     });
-
   } catch (error) {
     console.error("❌ DELETE TENANT ERROR:", error.message);
 
