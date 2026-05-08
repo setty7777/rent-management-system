@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { apiRequest } from "../../utils/api";
+
 import Layout from "../../components/Layout";
 import "./index.css";
 
@@ -18,34 +20,38 @@ const Rooms = () => {
   // Fetch buildings
   const fetchBuildings = useCallback(async () => {
     const data = await apiRequest({
-      endpoint: "/buildings/getBuildings",
+      endpoint: "/buildings",
       method: "GET",
       navigate,
     });
 
-    if (!data) return;
+    if (!data?.success) {
+      toast.error(data?.message || "Failed to fetch buildings");
+      return;
+    }
 
-    setBuildings(Array.isArray(data) ? data : data.data || []);
+    setBuildings(data.data || []);
   }, [navigate]);
 
   // Fetch floors
   const fetchFloors = useCallback(async () => {
     const data = await apiRequest({
-      endpoint: "/floors/getFloors",
+      endpoint: "/floors",
       method: "GET",
       navigate,
     });
 
-    if (!data) return;
+    if (!data?.success) {
+      toast.error(data?.message || "Failed to fetch floors");
+      return;
+    }
 
-    const formatted = (Array.isArray(data) ? data : data.data || []).map(
-      (f) => ({
-        id: f.id,
-        buildingId: f.building_id,
-        buildingName: f.building?.name || "",
-        floorName: f.floor_number,
-      }),
-    );
+    const formatted = (data.data || []).map((f) => ({
+      id: f.id,
+      buildingId: f.building_id,
+      buildingName: f.building?.name || "",
+      floorName: f.floor_number,
+    }));
 
     setFloors(formatted);
   }, [navigate]);
@@ -53,26 +59,24 @@ const Rooms = () => {
   // Fetch rooms
   const fetchRooms = useCallback(async () => {
     const data = await apiRequest({
-      endpoint: "/rooms/getRooms",
+      endpoint: "/rooms",
       method: "GET",
       navigate,
     });
 
-    if (!data) return;
+    if (!data?.success) {
+      toast.error(data?.message || "Failed to fetch rooms");
+      return;
+    }
 
-    const formatted = (Array.isArray(data) ? data : data.data || []).map(
-      (r) => ({
-        id: r.id,
-        buildingId: r.building_id,
-        buildingName: r.building?.name || "",
-        floorId: r.floor_id,
-        floorName: r.floor?.floor_number || "",
-        roomNumber: r.room_number,
-      }),
-    );
-
-    // ✅ SORT BY ID ASC (old → new)
-    formatted.sort((a, b) => a.id - b.id);
+    const formatted = (data.data || []).map((r) => ({
+      id: r.id,
+      buildingId: r.building_id,
+      buildingName: r.building?.name || "",
+      floorId: r.floor_id,
+      floorName: r.floor?.floor_number || "",
+      roomNumber: r.room_number,
+    }));
 
     setRooms(formatted);
   }, [navigate]);
@@ -83,19 +87,21 @@ const Rooms = () => {
     fetchRooms();
   }, [fetchBuildings, fetchFloors, fetchRooms]);
 
+  // ================= FILTER FLOORS =================
   const filteredFloors = floors.filter(
     (f) => f.buildingId === parseInt(buildingId),
   );
 
+  // ================= ADD / UPDATE =================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!buildingId || !floorId || !roomNumber) {
-      alert("Please fill all fields");
+      toast.warning("Please fill all fields");
       return;
     }
 
-    const endpoint = editId ? `/rooms/updateRoom/${editId}` : `/rooms/addRoom`;
+    const endpoint = editId ? `/rooms/${editId}` : "/rooms";
 
     const method = editId ? "PUT" : "POST";
 
@@ -110,18 +116,24 @@ const Rooms = () => {
       navigate,
     });
 
-    if (!data) return;
+    if (!data?.success) {
+      toast.error(data?.message || "Operation failed");
+      return;
+    }
 
-    alert(data.message || "Success");
+    toast.success(
+      editId ? "Room updated successfully" : "Room added successfully",
+    );
 
     setEditId(null);
     setBuildingId("");
     setFloorId("");
     setRoomNumber("");
 
-    fetchRooms(); // ✅ instead of manual state update
+    fetchRooms();
   };
 
+  // ================= EDIT =================
   const handleEdit = (room) => {
     setEditId(room.id);
     setBuildingId(room.buildingId.toString());
@@ -129,22 +141,29 @@ const Rooms = () => {
     setRoomNumber(room.roomNumber);
   };
 
+  // ================= DELETE =================
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this room?")) return;
+    const confirmed = window.confirm("Delete this room?");
+
+    if (!confirmed) return;
 
     const data = await apiRequest({
-      endpoint: `/rooms/deleteRoom/${id}`,
+      endpoint: `/rooms/${id}`,
       method: "DELETE",
       navigate,
     });
 
-    if (!data) return;
+    if (!data?.success) {
+      toast.error(data?.message || "Delete failed");
+      return;
+    }
 
-    alert(data.message || "Deleted successfully");
+    toast.success("Room deleted successfully");
 
     fetchRooms();
   };
 
+  // ================= CANCEL =================
   const handleCancel = () => {
     setEditId(null);
     setBuildingId("");
