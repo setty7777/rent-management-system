@@ -5,26 +5,28 @@ import Building from '../models/Building.js';
 export const getFloors = async (req, res) => {
   try {
     const floors = await Floor.findAll({
-      include: {
-        model: Building,
-        as: 'building',
-        attributes: ['id', 'name'],
-        required: false,
-      },
-      order: [['id', 'DESC']],
+      include: [
+        {
+          model: Building,
+          as: "building",
+          attributes: ["id", "name"],
+        },
+      ],
+      order: [["id", "DESC"]],
     });
 
     return res.json({
       success: true,
-      data: floors || [],
+      data: floors,
     });
 
   } catch (err) {
-    console.error("❌ GET FLOORS ERROR:", err.message);
+    console.error("❌ GET FLOORS ERROR:", err);
 
     return res.status(500).json({
       success: false,
-      message: 'Failed to fetch floors',
+      message: "Failed to fetch floors",
+      error: err.message,
     });
   }
 };
