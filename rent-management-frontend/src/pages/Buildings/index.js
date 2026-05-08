@@ -2,6 +2,7 @@ import { useState, useCallback , useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { apiRequest } from "../../utils/api";
 import Layout from "../../components/Layout";
+import { toast } from "react-toastify";
 import "./index.css";
 
 const Buildings = () => {
@@ -15,7 +16,7 @@ const Buildings = () => {
   // Fetch buildings
   const fetchBuildings = useCallback(async () => {
     const data = await apiRequest({
-      endpoint: "/buildings/getBuildings",
+      endpoint: "/buildings",
       method: "GET",
       navigate,
     });
@@ -35,13 +36,13 @@ const Buildings = () => {
     e.preventDefault();
 
     if (!buildingName || !address) {
-      alert("Please provide building name and address.");
+      toast.error("Please provide building name and address.");
       return;
     }
 
     const endpoint = editId
-      ? `/buildings/updateBuilding/${editId}`
-      : `/buildings/addBuilding`;
+  ? `/buildings/${editId}`
+  : `/buildings`;
 
     const method = editId ? "PUT" : "POST";
 
@@ -57,7 +58,7 @@ const Buildings = () => {
 
     if (!data) return;
 
-    alert(data.message || "Success");
+    toast.success(data.message || "Success");
 
     setBuildingName("");
     setAddress("");
@@ -85,14 +86,14 @@ const Buildings = () => {
     if (!window.confirm("Delete this building?")) return;
 
     const data = await apiRequest({
-      endpoint: `/buildings/deleteBuilding/${id}`,
+      endpoint: `/buildings/${id}`,
       method: "DELETE",
       navigate,
     });
 
     if (!data) return;
 
-    alert(data.message || "Deleted successfully");
+    toast.success(data.message || "Deleted successfully");
 
     fetchBuildings();
   };
