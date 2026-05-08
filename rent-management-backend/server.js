@@ -14,6 +14,8 @@ import billRoutes from "./routes/billRoutes.js";
 
 import { connectDB, sequelize } from './config/db.js';
 
+import './models/index.js';
+
 import path from 'path';
 import fs from 'fs';
 
@@ -71,7 +73,7 @@ if (!fs.existsSync(tenantsPath)) {
 
 app.use('/uploads', express.static(uploadsPath));
 
-/* ================= HEALTH CHECK ================= */
+/* ================= HEALTH CHECKa ================= */
 
 app.get('/', (req, res) => {
   res.json({ message: "API is running 🚀" });
