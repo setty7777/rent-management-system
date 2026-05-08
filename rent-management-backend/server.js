@@ -30,20 +30,14 @@ console.log("🔥 SERVER STARTED");
 // Helmet
 app.use(helmet());
 
-// Rate limiter
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-});
-app.use(limiter);
-
 /* ================= CORS ================= */
 
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173",
   "http://127.0.0.1:3000",
-  "https://rent-management-system-as6t.onrender.com"
+  "http://127.0.0.1:5173",
+  "https://rent-management-system-as6t.onrender.com",
 ];
 
 app.use(cors({
@@ -51,11 +45,23 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(null, false); // safer than throwing error
+      callback(null, false);
     }
   },
   credentials: true,
 }));
+
+// Rate limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 1000,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+
+app.use(limiter);
+
 
 /* ================= BODY PARSER ================= */
 
