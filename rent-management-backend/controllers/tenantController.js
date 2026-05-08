@@ -168,58 +168,109 @@ export const updateTenant = async (req, res) => {
     const data = {
       name: req.body.name?.trim() || tenant.name,
       phone: req.body.phone?.trim() || tenant.phone,
-      advance: req.body.advance ? Number(req.body.advance) : tenant.advance,
+      advance: req.body.advance
+        ? Number(req.body.advance)
+        : tenant.advance,
+
       join_date: req.body.join_date || tenant.join_date,
+
       building_id: req.body.building_id
         ? Number(req.body.building_id)
         : tenant.building_id,
-      floor_id: req.body.floor_id ? Number(req.body.floor_id) : tenant.floor_id,
-      room_id: req.body.room_id ? Number(req.body.room_id) : tenant.room_id,
+
+      floor_id: req.body.floor_id
+        ? Number(req.body.floor_id)
+        : tenant.floor_id,
+
+      room_id: req.body.room_id
+        ? Number(req.body.room_id)
+        : tenant.room_id,
     };
 
-    // Validate relationships again
+    // ================= VALIDATE =================
+
+    const building = await Building.findByPk(data.building_id);
     const floor = await Floor.findByPk(data.floor_id);
     const room = await Room.findByPk(data.room_id);
+
+    if (!building || !floor || !room) {
+      return res.status(404).json({
+        success: false,
+        message: "Invalid building/floor/room",
+      });
+    }
 
     if (Number(floor.building_id) !== Number(data.building_id)) {
       return res.status(400).json({
         success: false,
-        message: "Floor mismatch",
+        message: "Floor does not belong to building",
       });
     }
 
     if (Number(room.floor_id) !== Number(data.floor_id)) {
       return res.status(400).json({
         success: false,
-        message: "Room mismatch",
+        message: "Room does not belong to floor",
       });
     }
 
+    // ================= ROOM OCCUPANCY CHECK =================
+
+    const existingTenant = await Tenant.findOne({
+      where: {
+        room_id: data.room_id,
+      },
+    });
+
+    if (existingTenant && existingTenant.id !== tenant.id) {
+      return res.status(400).json({
+        success: false,
+        message: "Room is already occupied",
+      });
+    }
+
+    // ================= DOCUMENT REPLACEMENT =================
+
     let documents = tenant.documents || [];
 
+    // If new files uploaded
     if (req.files?.length > 0) {
-      const newDocs = await Promise.all(
+
+      // DELETE OLD CLOUDINARY FILES
+      for (const file of documents) {
+        if (file?.public_id) {
+          await cloudinary.uploader.destroy(file.public_id);
+        }
+      }
+
+      // UPLOAD NEW FILES
+      documents = await Promise.all(
         req.files.map(async (file) => {
           const result = await uploadToCloudinary(file.buffer);
+
           return {
             url: result.secure_url,
             public_id: result.public_id,
           };
-        }),
+        })
       );
-
-      documents = [...documents, ...newDocs];
     }
 
-    await tenant.update({ ...data, documents });
+    // ================= UPDATE =================
+
+    await tenant.update({
+      ...data,
+      documents,
+    });
 
     return res.json({
       success: true,
       message: "Tenant updated successfully",
       data: tenant,
     });
+
   } catch (error) {
-    console.error("❌ UPDATE TENANT ERROR:", error.message);
+    console.error("❌ UPDATE TENANT ERROR:", error);
 
     return res.status(500).json({
       success: false,
