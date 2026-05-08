@@ -11,14 +11,25 @@ const generateBillNumber = () => {
 };
 
 /* ================= NORMALIZER ================= */
-const normalize = (body) => ({
-  tenant_id: Number(body.tenant_id),
-  previous_reading: Number(body.previous_reading),
-  current_reading: Number(body.current_reading),
-  rate: Number(body.rate),
-  month: body.month?.trim().toLowerCase(),
-  year: Number(body.year),
-});
+const normalize = (body) => {
+  const previous = Number(body.previous_reading);
+  const current = Number(body.current_reading);
+  const rate = Number(body.rate);
+
+  const units = current - previous;
+  const amount = units * rate;
+
+  return {
+    tenant_id: Number(body.tenant_id),
+    previous_reading: previous,
+    current_reading: current,
+    units,
+    rate,
+    amount,
+    month: body.month?.trim().toLowerCase(),
+    year: Number(body.year),
+  };
+};
 
 /* ================= VALIDATION ================= */
 const validateBillData = (data) => {
