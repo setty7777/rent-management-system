@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { apiRequest } from "../../utils/api";
 import Layout from "../../components/Layout";
 import "./index.css";
@@ -16,12 +17,15 @@ const Floors = () => {
   // Fetch buildings with token
   const fetchBuildings = useCallback(async () => {
     const data = await apiRequest({
-      endpoint: "/buildings/getBuildings",
+      endpoint: "/buildings",
       method: "GET",
       navigate,
     });
 
-    if (!data) return;
+    if (!data?.success) {
+      toast.error(data?.message || "Failed to fetch buildings");
+      return;
+    }
 
     setBuildings(Array.isArray(data) ? data : data.data || []);
   }, [navigate]);
@@ -29,12 +33,15 @@ const Floors = () => {
   // Fetch floors with token
   const fetchFloors = useCallback(async () => {
     const data = await apiRequest({
-      endpoint: "/floors/getFloors",
+      endpoint: "/floors",
       method: "GET",
       navigate,
     });
-
-    if (!data) return;
+    console.log(data);
+    if (!data?.success) {
+      toast.error(data?.message || "Failed to fetch floors");
+      return;
+    }
 
     const formatted = (Array.isArray(data) ? data : data.data || []).map(
       (f) => ({
@@ -58,13 +65,11 @@ const Floors = () => {
     e.preventDefault();
 
     if (!buildingId || !floorName) {
-      alert("Please select building and enter floor.");
+      toast.warning("Please select building and enter floor");
       return;
     }
 
-    const endpoint = editId
-      ? `/floors/updateFloor/${editId}`
-      : `/floors/addFloor`;
+    const endpoint = editId ? `/floors/${editId}` : "/floors";
 
     const method = editId ? "PUT" : "POST";
 
@@ -78,9 +83,14 @@ const Floors = () => {
       navigate,
     });
 
-    if (!data) return;
+    if (!data?.success) {
+      toast.error(data?.message || "Operation failed");
+      return;
+    }
 
-    alert(data.message || "Success");
+    toast.success(
+      editId ? "Floor updated successfully" : "Floor added successfully",
+    );
 
     setBuildingId("");
     setFloorName("");
@@ -96,17 +106,22 @@ const Floors = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this floor?")) return;
+    const confirmed = window.confirm("Delete this floor?");
+
+    if (!confirmed) return;
 
     const data = await apiRequest({
-      endpoint: `/floors/deleteFloor/${id}`,
+      endpoint: `/floors/${id}`,
       method: "DELETE",
       navigate,
     });
 
-    if (!data) return;
+    if (!data?.success) {
+      toast.error(data?.message || "Delete failed");
+      return;
+    }
 
-    alert(data.message || "Deleted successfully");
+    toast.success("Floor deleted successfully");
 
     fetchFloors();
   };
