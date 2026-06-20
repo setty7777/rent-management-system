@@ -37,7 +37,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://127.0.0.1:3000",
   "https://demo-production-bf0f.up.railway.app",
-  "https://demo-lilac-three-77.vercel.app" // Add this line
+  "https://demo-psi-six-68.vercel.app" // Add this line
 ];
 
 app.use(cors({
