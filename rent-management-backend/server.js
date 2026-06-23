@@ -36,7 +36,7 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173",
   "http://127.0.0.1:3000",
-  "https://demo-production-bf0f.up.railway.app",
+  "https://rent-management-system-as6t.onrender.com",
   "https://demo-psi-six-68.vercel.app" // Add this line
 ];
 
