@@ -1,0 +1,46 @@
+/* ---------- DASHBOARD HEADER ---------- */
+.dashboard-header {
+  display: flex;
+  justify-content: center; /* center horizontally */
+  align-items: center;
+  margin: 40px 0 20px; /* spacing from top and cards */
+  flex-direction: column; /* stack heading and subtitle */
+  text-align: center;
+}
+
+.dashboard-header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1e293b;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.dashboard-subtitle {
+  color: #475569;
+  font-size: 1rem;
+  margin-top: 8px;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 1024px) {
+  .dashboard-header h1 {
+    font-size: 2rem;
+  }
+  .dashboard-subtitle {
+    font-size: 0.95rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .dashboard-header {
+    margin: 30px 0 15px;
+  }
+  .dashboard-header h1 {
+    font-size: 1.6rem;
+  }
+  .dashboard-subtitle {
+    font-size: 0.9rem;
+  }
+}

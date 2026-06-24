@@ -1,0 +1,229 @@
+/* PAGE CONTAINER */
+.rent-page {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 1200px;
+  margin: 20px auto;
+  box-sizing: border-box;
+}
+
+.rent-page h2 {
+  text-align: center;
+  margin: 20px 0 25px;
+  font-size: 1.5rem;
+  color: #1e293b;
+}
+
+/* FORM */
+.rent-form {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.rent-form input,
+.rent-form select {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  flex: 1;
+  min-width: 150px;
+  font-size: 1rem;
+}
+
+.rent-form button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background-color: #ef4444;
+}
+
+/* ✅ NEW FILTER BOX (same style as form) */
+.filter-box {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.filter-box select {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  flex: 1;
+  min-width: 150px;
+  font-size: 1rem;
+}
+
+.filter-box button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* CALCULATION BOX */
+.rent-calculation {
+  flex: 1 1 100%;
+  display: flex;
+  justify-content: space-between;
+  background: #f8fafc;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* TABLE */
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+table th,
+table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+table th {
+  background-color: #f1f5f9;
+}
+
+/* BUTTONS */
+.edit-btn {
+  background-color: #f59e0b;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* DUE COLORS */
+.due-overdue {
+  color: #dc2626;
+  font-weight: bold;
+}
+
+.due-refund {
+  color: #16a34a;
+  font-weight: bold;
+}
+
+/* MOBILE */
+.mobile-list {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  table {
+    display: none;
+  }
+
+  .mobile-list {
+    display: block;
+  }
+
+  .mobile-row {
+    background: #f9fafb;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .mobile-field {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .mobile-field .label {
+    font-weight: 600;
+  }
+
+  .rent-form input,
+  .rent-form select,
+  .rent-form button,
+  .filter-box input,
+  .filter-box button {
+    flex: 1 1 100%;
+  }
+
+  .rent-calculation {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+.mobile-list {
+  display: none;
+}
+
+.mobile-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.mobile-field {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.mobile-field .label {
+  font-weight: 600;
+  color: #555;
+}
+
+.mobile-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.mobile-actions button {
+  flex: 1;
+}
+
+/* Mobile View */
+@media screen and (max-width: 768px) {
+  .table-container {
+    display: none;
+  }
+
+  .mobile-list {
+    display: block;
+  }
+}

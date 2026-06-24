@@ -1,0 +1,176 @@
+/* PAGE CONTAINER (same as rent-page) */
+.bill-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 1200px;
+  margin: 20px auto;
+  box-sizing: border-box;
+}
+
+.bill-container h2 {
+  text-align: center;
+  margin: 20px 0 25px;
+  font-size: 1.5rem;
+  color: #1e293b;
+}
+
+/* FORM */
+.bill-form {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.bill-form input,
+.bill-form select {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  flex: 1;
+  min-width: 150px;
+  font-size: 1rem;
+}
+
+.bill-form button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* FILTER BOX (same as rententry) */
+.filter-container {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.filter-container select {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  flex: 1;
+  min-width: 150px;
+  font-size: 1rem;
+}
+
+.filter-container button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* TABLE */
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+table th,
+table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+table th {
+  background-color: #f1f5f9;
+}
+
+/* BUTTONS */
+.edit-btn {
+  background-color: #f59e0b;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.print-btn {
+  background-color: #16a34a;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* MOBILE */
+.mobile-list {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  table {
+    display: none;
+  }
+
+  .mobile-list {
+    display: block;
+  }
+
+  .mobile-row {
+    background: #f9fafb;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .mobile-field {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .label {
+    font-weight: 600;
+  }
+
+  .bill-form input,
+  .bill-form select,
+  .bill-form button,
+  .filter-container select,
+  .filter-container button {
+    flex: 1 1 100%;
+  }
+}
+
+/* PRINT */
+@media print {
+  .bill-form,
+  .filter-container,
+  .edit-btn,
+  .delete-btn,
+  .print-btn {
+    display: none !important;
+  }
+
+  .bill-container {
+    padding: 0;
+  }
+}

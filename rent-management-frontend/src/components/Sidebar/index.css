@@ -1,0 +1,162 @@
+.sidebar {
+  width: 240px;
+  background: linear-gradient(180deg, #0f172a, #1e293b);
+  color: #f1f5f9;
+  padding: 20px;
+
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  z-index: 1100;
+  transition: left 0.3s ease-in-out;
+
+  /* NEW */
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* pushes logout to bottom */
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: #cbd5e1;
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.sidebar a:hover {
+  background: rgba(99, 102, 241, 0.2);
+  color: #ffffff;
+  transform: translateX(5px);
+}
+
+.sidebar a.active {
+  background: #6366f1;
+  color: white;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.5);
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logo-wrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+}
+
+.logo-wrapper:hover {
+  transform: scale(1.1) rotate(10deg);
+}
+
+.logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logo-text {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* -------- LOGOUT FOOTER -------- */
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-footer .logout-btn {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: #fff;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.sidebar-footer .logout-btn:hover {
+  background: #ef4444;
+  transform: translateY(-1px);
+}
+
+/* Mobile / Tablet */
+@media screen and (max-width: 1024px) {
+  .sidebar {
+    left: -240px;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: opacity 0.3s ease;
+  }
+
+  .sidebar-overlay.active {
+    display: block;
+  }
+
+  .sidebar-footer .logout-btn {
+    padding: 10px;
+    font-size: 14px;
+  }
+}
+
+/* Small mobile */
+@media screen and (max-width: 480px) {
+  .sidebar {
+    width: 220px;
+  }
+}
+
+/* Desktop spacing improvement */
+@media screen and (min-width: 1025px) {
+  .sidebar nav {
+    gap: 8px; /* adds space between items */
+  }
+
+  .sidebar a {
+    margin-bottom: 14px; /* increase vertical spacing */
+    padding: 14px 18px; /* slightly bigger click area */
+  }
+}
